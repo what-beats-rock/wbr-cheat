@@ -1,7 +1,7 @@
 import type { FightResult } from "whatbeatsrock";
 import { submitGuess, saveScore } from "whatbeatsrock";
 
-import { LIMIT, WORDS } from "./config";
+import { LIMIT, TOTAL_RUNS, WORDS } from "./config";
 import { getNextGuess } from "./utils";
 
 class Program {
@@ -169,7 +169,7 @@ class Program {
 
 try {
   const program = new Program();
-  await program.runSequence(5);
+  await program.runSequence(TOTAL_RUNS);
 } catch (e) {
   console.error(`🛑 Master Runner Failed:`, e.message);
 }

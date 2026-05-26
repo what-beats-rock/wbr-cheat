@@ -152,4 +152,6 @@ const WORDS = [
 
 const LIMIT = 12;
 
-export { WORDS, LIMIT };
+const TOTAL_RUNS = 5;
+
+export { WORDS, LIMIT, TOTAL_RUNS };
