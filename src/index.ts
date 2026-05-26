@@ -17,6 +17,13 @@ class Program {
     this.usedPhrases = [];
   }
 
+  reset() {
+    this.gameId = crypto.randomUUID();
+    this.score = 0;
+    this.previousGuess = "rock";
+    this.usedPhrases = [];
+  }
+
   generateNextGuess(previousGuess: string): string {
     const { candidatePhrase, fallbackTriggered } = getNextGuess(
       previousGuess,
@@ -71,7 +78,8 @@ class Program {
     }
   }
 
-  async run() {
+  // Runs a single game and returns the losing reason text
+  async run(): Promise<string> {
     let prevEmoji = "🪨";
     let guess = this.generateNextGuess(this.previousGuess);
 
@@ -91,7 +99,7 @@ class Program {
         ? `[CACHED=${data.cache_count}]`
         : "[UNCACHED]";
       console.log(
-        `✅ Win! ${cacheStatus} Reason: "${data.reason}". Current Score: ${this.score}`,
+        `✅ Win! ${cacheStatus} Reason: "${data.reason}"\nCurrent Score: ${this.score}`,
       );
 
       this.previousGuess = guess;
@@ -110,19 +118,58 @@ class Program {
     }
 
     console.log(
-      `❌ Round lost: ${data.reason}. Final score recorded: ${this.score}`,
+      `❌ Round lost: ${data.reason}\nFinal score recorded: ${this.score}`,
     );
     await this.submitScore(guess, data, prevEmoji);
     console.log(
       `%cGame Over! Final Score: ${this.score}`,
       "font-weight: bold; color: #00ff00; font-size: 14px;",
     );
+
+    // Return the breakdown text of why the round lost
+    const guessEmoji = data.guess_emoji || "❓";
+    return `Game ID ${this.gameId} (Score: ${this.score}): ${guess} ${guessEmoji} lost to ${this.previousGuess} ${prevEmoji}. Reason: "${data.reason}"`;
+  }
+
+  // Runs a specific number of games sequentially and prints a summary
+  async runSequence(totalRuns: number) {
+    const lossReasons: string[] = [];
+
+    for (let i = 1; i <= totalRuns; i++) {
+      console.log(`\n============================`);
+      console.log(`🚀 STARTING GAME RUN ${i} OF ${totalRuns}`);
+      console.log(`============================`);
+
+      try {
+        const reason = await this.run();
+        lossReasons.push(reason);
+      } catch (e) {
+        console.error(`🛑 Critical Error in Run ${i}:`, e.message);
+        lossReasons.push(`Run ${i} Failed: ${e.message}`);
+      }
+
+      // Reset state for the next game if we aren't on the final run
+      if (i < totalRuns) {
+        this.reset();
+      }
+    }
+
+    // Output all summary statistics after everything finishes
+    console.log(`\n============================`);
+    console.log(`📊 ALL RUNS COMPLETE SUMMARY`);
+    console.log(`============================`);
+    console.log(`Total Matches Executed: ${totalRuns}\n`);
+    console.log(`Losing Reasons Breakdown:`);
+
+    lossReasons.forEach((entry, index) => {
+      console.log(`[${index + 1}] ${entry}`);
+    });
   }
 }
 
 try {
   const program = new Program();
-  await program.run();
+  await program.runSequence(5);
 } catch (e) {
-  console.error(`🛑 Critical Error:`, e.message);
+  console.error(`🛑 Master Runner Failed:`, e.message);
 }

@@ -151,6 +151,6 @@ const WORDS = [
   "yogurt",
 ];
 
-const LIMIT = 20;
+const LIMIT = 12;
 
 export { WORDS, LIMIT };
