@@ -5,10 +5,10 @@
     "test": "bun test",
     "lint": "oxlint",
     "format": "oxfmt",
-    "build": "bun build --outdir=dist ./src/index.ts --packages=bundle"
+    "build": "bun build --outdir=dist ./src/index.ts"
   },
   "dependencies": {
-    "whatbeatsrock": "0.0.2"
+    "whatbeatsrock": "0.0.4"
   },
   "devDependencies": {
     "@gameroman/config": "0.1.0",

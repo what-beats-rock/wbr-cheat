@@ -150,8 +150,8 @@ const WORDS = [
   "yogurt",
 ];
 
-const LIMIT = 6;
+const LIMIT = 7;
 
-const TOTAL_RUNS = 25;
+const TOTAL_RUNS = 5;
 
 export { WORDS, LIMIT, TOTAL_RUNS };

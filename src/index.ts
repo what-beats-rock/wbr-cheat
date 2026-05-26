@@ -54,28 +54,14 @@ class Program {
       console.log("Saving highscore...");
       await saveScore({ payload });
     } catch (error) {
-      console.error(`⚠️ Failed to submit highscore:`, error.message);
+      console.error(`⚠️ Failed to submit highscore:`, error);
     }
   }
 
   async submitGuess(guess: string) {
     const payload = { gid: this.gameId, guess, prev: this.previousGuess };
 
-    try {
-      const responseData = await submitGuess({ payload });
-
-      if ("error" in responseData) {
-        return { success: false as const, error: responseData.error };
-      }
-
-      this.usedPhrases.push(guess);
-      return { success: true as const, data: responseData.data };
-    } catch (error) {
-      return {
-        success: false as const,
-        error: error?.message || "An unexpected network error occurred.",
-      };
-    }
+    return await submitGuess({ payload });
   }
 
   // Runs a single game and returns the losing reason text
@@ -85,7 +71,7 @@ class Program {
 
     console.log(`Submitting first guess: ${guess}`);
     let response = await this.submitGuess(guess);
-    if (!response.success) {
+    if (!response.ok) {
       throw new Error(response.error);
     }
 
@@ -96,8 +82,8 @@ class Program {
       this.score++;
 
       const cacheStatus = data.cached
-        ? `[CACHED=${data.cache_count}]`
-        : "[UNCACHED]";
+        ? `[🔵 CACHED=${data.cache_count}]`
+        : "[🟣 UNCACHED]";
       console.log(
         `✅ Win! ${cacheStatus} Reason: "${data.reason}"\nCurrent Score: ${this.score}`,
       );
@@ -109,7 +95,7 @@ class Program {
       console.log(`Submitting next guess: ${guess}`);
 
       response = await this.submitGuess(guess);
-      if (!response.success) {
+      if (!response.ok) {
         throw new Error(response.error);
       }
 
@@ -145,7 +131,7 @@ class Program {
         const reason = await this.run();
         lossReasons.push(reason);
       } catch (e) {
-        console.error(`🛑 Critical Error in Run ${i}:`, e.message);
+        console.error(`🛑 Critical Error in Run ${i}:`, e);
         lossReasons.push(`Run ${i} Failed: ${e.message}`);
       }
 
@@ -172,5 +158,5 @@ try {
   const program = new Program();
   await program.runSequence(TOTAL_RUNS);
 } catch (e) {
-  console.error(`🛑 Master Runner Failed:`, e.message);
+  console.error(`🛑 Master Runner Failed:`, e);
 }
