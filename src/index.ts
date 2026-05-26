@@ -117,9 +117,11 @@ class Program {
       win = data.guess_wins;
     }
 
-    console.log(
-      `❌ Round lost: ${data.reason}\nFinal score recorded: ${this.score}`,
-    );
+    const guessEmoji = data.guess_emoji || "❓";
+    const reason = `Game ID ${this.gameId} (Score: ${this.score}): ${guess} ${guessEmoji} lost to ${this.previousGuess} ${prevEmoji}. Reason: "${data.reason}"`;
+
+    console.log(reason);
+
     await this.submitScore(guess, data, prevEmoji);
     console.log(
       `%cGame Over! Final Score: ${this.score}`,
@@ -127,8 +129,7 @@ class Program {
     );
 
     // Return the breakdown text of why the round lost
-    const guessEmoji = data.guess_emoji || "❓";
-    return `Game ID ${this.gameId} (Score: ${this.score}): ${guess} ${guessEmoji} lost to ${this.previousGuess} ${prevEmoji}. Reason: "${data.reason}"`;
+    return reason;
   }
 
   // Runs a specific number of games sequentially and prints a summary
