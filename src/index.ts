@@ -60,8 +60,29 @@ class Program {
 
   async submitGuess(guess: string) {
     const payload = { gid: this.gameId, guess, prev: this.previousGuess };
-
     return await submitGuess({ payload });
+  }
+
+  async executeWithRetry(guess: string): Promise<FightResult> {
+    let attempt = 0;
+
+    while (true) {
+      const response = await this.submitGuess(guess);
+
+      if (response.ok) {
+        return response.data;
+      }
+
+      attempt++;
+
+      const delay = Math.pow(1.3, attempt) * 15_000;
+
+      console.warn(
+        `⚠️ Rate limit or API error detected ("${response.error}"). Retrying attempt ${attempt} in ${(delay / 1000).toFixed(2)}s...`,
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
   }
 
   // Runs a single game and returns the losing reason text
@@ -70,12 +91,8 @@ class Program {
     let guess = this.generateNextGuess(this.previousGuess);
 
     console.log(`Submitting first guess: ${guess}`);
-    let response = await this.submitGuess(guess);
-    if (!response.ok) {
-      throw new Error(response.error);
-    }
-
-    let data = response.data;
+    // Handled via backoff utility
+    let data = await this.executeWithRetry(guess);
     let win = data.guess_wins;
 
     while (win) {
@@ -94,12 +111,8 @@ class Program {
       guess = this.generateNextGuess(this.previousGuess);
       console.log(`Submitting next guess: ${guess}`);
 
-      response = await this.submitGuess(guess);
-      if (!response.ok) {
-        throw new Error(response.error);
-      }
-
-      data = response.data;
+      // Handled via backoff utility
+      data = await this.executeWithRetry(guess);
       win = data.guess_wins;
     }
 
