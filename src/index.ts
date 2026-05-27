@@ -75,12 +75,12 @@ class Program {
         return response.data;
       }
 
+      const delay = Math.pow(1.3, attempt) * 30_000;
+
       attempt++;
 
-      const delay = Math.pow(1.3, attempt) * 15_000;
-
       console.log(
-        `⚠️ Rate limit or API error detected ("${response.error}"). Retrying attempt ${attempt} in ${(delay / 1000).toFixed(2)}s...`,
+        `⚠️ Rate limit or API error detected (${response.error}). Retrying attempt ${attempt} in ${(delay / 1000).toFixed(2)}s...`,
       );
 
       await new Promise((resolve) => setTimeout(resolve, delay));
