@@ -1,7 +1,7 @@
 import type { FightResult } from "whatbeatsrock";
 import { submitGuess, saveScore } from "whatbeatsrock";
 
-import { LIMIT, TOTAL_RUNS, WORDS } from "./config";
+import { LIMIT, TOTAL_RUNS, USE_RANDOM_ORDER, WORDS } from "./config";
 import { getNextGuess } from "./utils";
 
 class Program {
@@ -29,6 +29,7 @@ class Program {
       previousGuess,
       this.usedPhrases,
       WORDS.slice(0, LIMIT),
+      USE_RANDOM_ORDER,
     );
 
     if (fallbackTriggered) {
