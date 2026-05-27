@@ -71,7 +71,6 @@ const WORDS = [
   "jacket",
   "juice",
   "kangaroo",
-  "key",
   "koala",
   "ladder",
   "lamp",
@@ -150,8 +149,8 @@ const WORDS = [
   "yogurt",
 ];
 
-const LIMIT = 85;
+const LIMIT = 10;
 
-const TOTAL_RUNS = 100;
+const TOTAL_RUNS = 10;
 
 export { WORDS, LIMIT, TOTAL_RUNS };

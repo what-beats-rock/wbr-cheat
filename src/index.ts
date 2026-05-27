@@ -45,8 +45,7 @@ class Program {
     data: FightResult,
     prevEmoji: string,
   ): Promise<void> {
-    const guessEmoji = data.guess_emoji || "❓";
-    const text = `${guess} ${guessEmoji} did not beat ${this.previousGuess} ${prevEmoji}`;
+    const text = `${guess} ${data.guess_emoji} did not beat ${this.previousGuess} ${prevEmoji}`;
 
     const payload = { gid: this.gameId, score: this.score, text: text };
 
@@ -58,18 +57,15 @@ class Program {
     }
   }
 
-  async submitGuess(guess: string) {
-    const payload = { gid: this.gameId, guess, prev: this.previousGuess };
-    return await submitGuess({ payload });
-  }
-
-  async executeWithRetry(guess: string): Promise<FightResult> {
+  async submitGuess(guess: string): Promise<FightResult> {
     let attempt = 0;
+    const payload = { gid: this.gameId, guess, prev: this.previousGuess };
 
     while (true) {
-      const response = await this.submitGuess(guess);
+      const response = await submitGuess({ payload });
 
       if (response.ok) {
+        this.usedPhrases.push(guess);
         return response.data;
       }
 
@@ -90,9 +86,9 @@ class Program {
     let prevEmoji = "🪨";
     let guess = this.generateNextGuess(this.previousGuess);
 
-    console.log(`Submitting first guess: ${guess}`);
-    // Handled via backoff utility
-    let data = await this.executeWithRetry(guess);
+    console.log(`Submitting first guess: "${guess}"`);
+
+    let data = await this.submitGuess(guess);
     let win = data.guess_wins;
 
     while (win) {
@@ -106,18 +102,16 @@ class Program {
       );
 
       this.previousGuess = guess;
-      prevEmoji = data.guess_emoji || "❓";
+      prevEmoji = data.guess_emoji;
 
       guess = this.generateNextGuess(this.previousGuess);
-      console.log(`Submitting next guess: ${guess}`);
+      console.log(`Submitting next guess: "${guess}"`);
 
-      // Handled via backoff utility
-      data = await this.executeWithRetry(guess);
+      data = await this.submitGuess(guess);
       win = data.guess_wins;
     }
 
-    const guessEmoji = data.guess_emoji || "❓";
-    const reason = `Game ID ${this.gameId} (Score: ${this.score}): ${guess} ${guessEmoji} lost to ${this.previousGuess} ${prevEmoji}. Reason: "${data.reason}"`;
+    const reason = `Game ID ${this.gameId} (Score: ${this.score}): "${guess}" (${data.guess_emoji}) lost to "${this.previousGuess}" (${prevEmoji}). Reason: "${data.reason}"`;
 
     console.log(reason);
 
@@ -145,6 +139,7 @@ class Program {
         lossReasons.push(reason);
       } catch (e) {
         console.error(`🛑 Critical Error in Run ${i}:`, e);
+        // @ts-expect-error
         lossReasons.push(`Run ${i} Failed: ${e.message}`);
       }
 
