@@ -5,7 +5,6 @@ const WORDS = [
   "badger",
   "baguette",
   "banana",
-  "bed",
   "bird",
   "blanket",
   "book",
@@ -13,21 +12,17 @@ const WORDS = [
   "bowl",
   "box",
   "broccoli",
-  "brush",
   "bucket",
-  "butter",
   "cake",
   "camel",
   "camera",
   "candle",
-  "carrot",
   "cat",
   "chair",
   "cheese",
   "cherry",
   "chicken",
   "chocolate",
-  "clock",
   "cloud",
   "coconut",
   "coffee",
@@ -146,7 +141,7 @@ const WORDS = [
   "yogurt",
 ];
 
-const LIMIT = 15;
+const LIMIT = 35;
 
 const TOTAL_RUNS = 3;
 
