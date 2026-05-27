@@ -5,7 +5,6 @@ const WORDS = [
   "badger",
   "baguette",
   "banana",
-  "bird",
   "blanket",
   "book",
   "bottle",
