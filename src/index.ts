@@ -32,8 +32,8 @@ class Program {
     );
 
     if (fallbackTriggered) {
-      console.warn(
-        `⚠️ Exhausted all combinations in the word bank. Returning fallback url.`,
+      console.log(
+        "\x1b[36m🔄 Word bank fully explored — Submitting final guess\x1b[0m",
       );
     }
 
@@ -51,7 +51,12 @@ class Program {
 
     try {
       console.log("Saving highscore...");
-      await saveScore({ payload });
+      const result = await saveScore({ payload });
+      if (!result.ok) {
+        console.error(`⚠️ Failed to submit highscore:`, result.error);
+      } else {
+        console.log("Score saved");
+      }
     } catch (error) {
       console.error(`⚠️ Failed to submit highscore:`, error);
     }
@@ -73,7 +78,7 @@ class Program {
 
       const delay = Math.pow(1.3, attempt) * 15_000;
 
-      console.warn(
+      console.log(
         `⚠️ Rate limit or API error detected ("${response.error}"). Retrying attempt ${attempt} in ${(delay / 1000).toFixed(2)}s...`,
       );
 
