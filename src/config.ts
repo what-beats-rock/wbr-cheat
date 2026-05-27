@@ -7,7 +7,6 @@ const WORDS = [
   "baguette",
   "banana",
   "backpack",
-  "basket",
   "bed",
   "bird",
   "blanket",
@@ -149,8 +148,8 @@ const WORDS = [
   "yogurt",
 ];
 
-const LIMIT = 10;
+const LIMIT = 12;
 
-const TOTAL_RUNS = 10;
+const TOTAL_RUNS = 6;
 
 export { WORDS, LIMIT, TOTAL_RUNS };
