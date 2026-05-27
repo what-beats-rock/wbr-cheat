@@ -2,11 +2,9 @@ const WORDS = [
   "ant",
   "apple",
   "avocado",
-  "bacon",
   "badger",
   "baguette",
   "banana",
-  "backpack",
   "bed",
   "bird",
   "blanket",
@@ -148,8 +146,8 @@ const WORDS = [
   "yogurt",
 ];
 
-const LIMIT = 12;
+const LIMIT = 15;
 
-const TOTAL_RUNS = 6;
+const TOTAL_RUNS = 3;
 
 export { WORDS, LIMIT, TOTAL_RUNS };
