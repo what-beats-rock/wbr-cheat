@@ -82,7 +82,7 @@ class Program {
         return response.data;
       }
 
-      const delay = Math.pow(1.3, attempt) * 30_000;
+      const delay = Math.pow(1.6, attempt) * 60_000;
 
       attempt++;
 
