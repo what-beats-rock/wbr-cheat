@@ -71,4 +71,82 @@ describe("getNextGuess Logic Tests", () => {
     expect(result.fallbackTriggered).toBe(true);
     expect(result.candidatePhrase).toBe("https://rman.dev");
   });
+
+  test("should respect useRandomOrder = false (deterministic order)", () => {
+    const previousGuess = "rock";
+    const usedPhrases: string[] = [];
+    const orderedBank = ["banana", "apple", "carrot", "diamond"];
+
+    const result = getNextGuess(
+      previousGuess,
+      usedPhrases,
+      orderedBank,
+      [], // no losing combos
+      false, // useRandomOrder = false
+    );
+
+    // Should pick the first valid word in array order → "banana"
+    expect(result.candidatePhrase).toBe("banana that destroys this exact rock");
+    expect(result.fallbackTriggered).toBe(false);
+  });
+
+  test("should skip losing combination when previousGuess exactly matches 3-element triple", () => {
+    const previousGuess = "soup that destroys this exact strawberry";
+    const usedPhrases: string[] = [];
+    const wordBank = ["lemon", "apple", "banana"];
+
+    const losingCombinations: [string, string, string][] = [
+      ["lemon", "soup", "strawberry"],
+    ];
+
+    const result = getNextGuess(
+      previousGuess,
+      usedPhrases,
+      wordBank,
+      losingCombinations,
+    );
+
+    // Should skip "lemon" because previousGuess exactly matches the bad triple
+    expect(result.candidatePhrase).toBe("apple that destroys this exact soup");
+    expect(result.fallbackTriggered).toBe(false);
+  });
+
+  test("should NOT skip losing combination when previousGuess does NOT match the triple context", () => {
+    const previousGuess = "soup that destroys this exact cake"; // different context
+    const usedPhrases: string[] = [];
+    const wordBank = ["lemon", "apple", "banana"];
+
+    const losingCombinations: [string, string, string][] = [
+      ["lemon", "soup", "strawberry"],
+    ];
+
+    const result = getNextGuess(
+      previousGuess,
+      usedPhrases,
+      wordBank,
+      losingCombinations,
+    );
+
+    // "lemon" should be allowed because the context doesn't match the bad triple
+    expect(result.candidatePhrase).toBe("lemon that destroys this exact soup");
+    expect(result.fallbackTriggered).toBe(false);
+  });
+
+  test("should handle 2-element losing combinations correctly", () => {
+    const previousGuess = "rock";
+    const usedPhrases: string[] = [];
+    const wordBank = ["umbrella", "apple"];
+
+    const losingCombinations: [string, string][] = [["umbrella", "rock"]];
+
+    const result = getNextGuess(
+      previousGuess,
+      usedPhrases,
+      wordBank,
+      losingCombinations,
+    );
+
+    // Should skip "umbrella" against "rock"
+    expect(result.candidatePhrase).toBe("apple that destroys this exact rock");
+  });
 });
