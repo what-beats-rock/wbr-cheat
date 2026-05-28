@@ -1,5 +1,5 @@
 const WORDS = [
-  "anchor",
+  // "anchor",
   "ant",
   "apple",
   "avocado",
@@ -148,10 +148,18 @@ const WORDS = [
   "window",
   "wolf",
   "yogurt",
-];
+] as const;
 
-const LOSING_COMBINATIONS: [string, string, string?][] = [
+type ExtraWord = "rock" | "anchor";
+
+type Word = (typeof WORDS)[number] | ExtraWord;
+
+const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["umbrella", "rock"],
+  ["apple", "anchor", "ant"],
+  ["apple", "clock", "ant"],
+  ["avocado", "anchor", "apple"],
+  ["avocado", "bacon", "backpack"],
   ["avocado", "soup", "lemon"],
   ["bacon", "soup", "diamond"],
   ["bed", "box", "sheep"],
