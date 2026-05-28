@@ -8,7 +8,7 @@
     "build": "bun build --outdir=dist ./src/index.ts"
   },
   "dependencies": {
-    "whatbeatsrock": "0.0.4"
+    "whatbeatsrock": "0.0.5"
   },
   "devDependencies": {
     "@gameroman/config": "0.1.0",
