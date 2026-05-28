@@ -1,5 +1,5 @@
 const WORDS = [
-  // "anchor",
+  "anchor",
   "ant",
   "apple",
   "avocado",
@@ -98,6 +98,7 @@ const WORDS = [
   "pancake",
   "panda",
   "paper",
+  "pea",
   "peach",
   "pear",
   "pen",
@@ -155,25 +156,33 @@ type ExtraWord = "rock" | "anchor";
 type Word = (typeof WORDS)[number] | ExtraWord;
 
 const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
+  ["hamburger", "rock"],
+  // ["juice", "backpack"],
   ["umbrella", "rock"],
   ["apple", "anchor", "ant"],
   ["apple", "clock", "ant"],
   ["apple", "juice", "ant"],
   ["apple", "juice", "backpack"],
+  ["apple", "seal", "umbrella"],
   ["avocado", "anchor", "apple"],
   ["avocado", "bacon", "backpack"],
   ["avocado", "juice", "ant"],
   ["avocado", "juice", "backpack"],
   ["avocado", "soup", "lemon"],
+  ["bacon", "juice", "backpack"],
   ["bacon", "soup", "diamond"],
+  ["banana", "stone", "potato"],
   ["bed", "box", "sheep"],
   ["bird", "box", "camel"],
   ["bird", "wheel", "cow"],
+  ["bucket", "ring", "cow"],
   ["camel", "monkey", "spaghetti"],
   ["camel", "snake", "sushi"],
   ["carrot", "onion", "broccoli"],
   ["carrot", "popcorn", "cookie"],
   ["carrot", "spaghetti", "wheel"],
+  ["cat", "key", "book"],
+  ["cat", "snake", "ring"],
   ["cherry", "chocolate", "box"],
   ["cherry", "lemon", "window"],
   ["chicken", "bird", "cheese"],
@@ -182,17 +191,26 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["chocolate", "wheel", "cat"],
   ["coffee", "tea", "duck"],
   ["cow", "popcorn", "piano"],
+  ["cup", "soup", "piano"],
   ["diamond", "wheel", "book"],
   ["egg", "soup", "coconut"],
+  ["fox", "clock", "tomato"],
+  ["fox", "soup", "elephant"],
   ["hamburger", "soup", "garlic"],
+  ["kangaroo", "horse", "honey"],
   ["kangaroo", "snake", "rock"],
+  ["koala", "key", "dog"],
+  ["ladder", "clock", "apple"],
+  ["ladder", "stone", "fox"],
   ["lemon", "box", "egg"],
   ["lemon", "onion", "tree"],
+  ["lemon", "seal", "snake"],
   ["lemon", "snake", "diamond"],
   ["lemon", "soup", "cherry"],
   ["lemon", "soup", "strawberry"],
   ["lemon", "watermelon", "hamburger"],
   ["lemon", "wheel", "soup"],
+  ["lion", "box", "whale"],
   ["mango", "apple", "pencil"],
   ["mango", "lemon", "baguette"],
   ["milk", "cake", "chocolate"],
@@ -204,10 +222,15 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["panda", "monkey", "bottle"],
   ["peach", "book", "spaghetti"],
   ["peach", "milk", "rock"],
+  ["peach", "pencil", "basket"],
   ["peach", "pepper", "llama"],
   ["pig", "milk", "giraffe"],
+  ["pigeon", "key", "rock"],
+  ["popcorn", "key", "rock"],
   ["popcorn", "wheel", "book"],
   ["strawberry", "wheel", "owl"],
+  ["strawberry", "wheel", "tree"],
+  ["sushi", "cucumber", "strawberry"],
   ["tomato", "cookie", "pencil"],
   ["tomato", "lemon", "spaghetti"],
   ["umbrella", "box", "spider"],
@@ -216,8 +239,8 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
 
 const LIMIT = 250;
 
-const TOTAL_RUNS = 1;
+const TOTAL_RUNS = 250;
 
-const USE_RANDOM_ORDER = false;
+const USE_RANDOM_ORDER = true;
 
 export { WORDS, LIMIT, TOTAL_RUNS, USE_RANDOM_ORDER, LOSING_COMBINATIONS };
