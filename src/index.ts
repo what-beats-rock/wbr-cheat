@@ -71,6 +71,9 @@ class Program {
   }
 
   async submitGuess(guess: string): Promise<FightResult> {
+    const ONE_MINUTE_MS = 60_000;
+    const MAX_DELAY_MS = 10 * ONE_MINUTE_MS; // 10 minutes
+
     let attempt = 0;
     const payload = { gid: this.gameId, guess, prev: this.previousGuess };
 
@@ -82,12 +85,20 @@ class Program {
         return response.data;
       }
 
-      const delay = Math.pow(1.6, attempt) * 60_000;
+      // Calculate exponential delay and cap it at 10 minutes
+      const calculatedDelay = Math.pow(1.3, attempt) * ONE_MINUTE_MS;
+      const delay = Math.min(calculatedDelay, MAX_DELAY_MS);
 
       attempt++;
 
+      // Calculate minutes and remaining seconds for the log
+      const minutes = Math.floor(delay / ONE_MINUTE_MS);
+      const seconds = ((delay % ONE_MINUTE_MS) / 1000).toFixed(0);
+      const timeString =
+        minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+
       console.log(
-        `⚠️ Rate limit or API error detected (${response.error}). Retrying attempt ${attempt} in ${(delay / 1000).toFixed(2)}s...`,
+        `⚠️ Rate limit or API error detected (${response.error}). Retrying attempt ${attempt} in ${timeString}...`,
       );
 
       await new Promise((resolve) => setTimeout(resolve, delay));

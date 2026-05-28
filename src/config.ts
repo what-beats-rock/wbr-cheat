@@ -158,6 +158,7 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["umbrella", "rock"],
   ["apple", "anchor", "ant"],
   ["apple", "clock", "ant"],
+  ["apple", "juice", "ant"],
   ["avocado", "anchor", "apple"],
   ["avocado", "bacon", "backpack"],
   ["avocado", "soup", "lemon"],
