@@ -104,6 +104,7 @@ describe("getNextGuess Logic Tests", () => {
       usedPhrases,
       wordBank,
       losingCombinations,
+      false,
     );
 
     // Should skip "lemon" because previousGuess exactly matches the bad triple
@@ -125,6 +126,7 @@ describe("getNextGuess Logic Tests", () => {
       usedPhrases,
       wordBank,
       losingCombinations,
+      false,
     );
 
     // "lemon" should be allowed because the context doesn't match the bad triple
@@ -148,5 +150,51 @@ describe("getNextGuess Logic Tests", () => {
 
     // Should skip "umbrella" against "rock"
     expect(result.candidatePhrase).toBe("apple that destroys this exact rock");
+  });
+
+  test("should never return a known losing phrase even with random order (3-element)", () => {
+    const previousGuess = "soup that destroys this exact strawberry";
+    const usedPhrases: string[] = [];
+    const wordBank = ["lemon", "apple", "banana"];
+
+    const losingCombinations: [string, string, string][] = [
+      ["lemon", "soup", "strawberry"],
+    ];
+
+    const result = getNextGuess(
+      previousGuess,
+      usedPhrases,
+      wordBank,
+      losingCombinations,
+      true,
+    );
+
+    // With random order we can't know which word it picks,
+    // but we can assert it never picks the losing one.
+    expect(result.candidatePhrase).not.toBe(
+      "lemon that destroys this exact soup",
+    );
+    expect(result.fallbackTriggered).toBe(false);
+  });
+
+  test("should never return a known losing phrase even with random order (2-element)", () => {
+    const previousGuess = "rock";
+    const usedPhrases: string[] = [];
+    const wordBank = ["umbrella", "apple", "banana"];
+
+    const losingCombinations: [string, string][] = [["umbrella", "rock"]];
+
+    const result = getNextGuess(
+      previousGuess,
+      usedPhrases,
+      wordBank,
+      losingCombinations,
+      true,
+    );
+
+    expect(result.candidatePhrase).not.toBe(
+      "umbrella that destroys this exact rock",
+    );
+    expect(result.fallbackTriggered).toBe(false);
   });
 });
