@@ -4,6 +4,7 @@ import { submitGuess, saveScore } from "whatbeatsrock";
 import {
   LIMIT,
   LOSING_COMBINATIONS,
+  OFFSET,
   TOTAL_RUNS,
   USE_RANDOM_ORDER,
   WORDS,
@@ -34,7 +35,7 @@ class Program {
     const { candidatePhrase, fallbackTriggered } = getNextGuess(
       previousGuess,
       this.usedPhrases,
-      WORDS.slice(0, LIMIT),
+      WORDS.slice(OFFSET, LIMIT),
       LOSING_COMBINATIONS,
       USE_RANDOM_ORDER,
     );
