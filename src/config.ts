@@ -245,6 +245,7 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["cherry", "chocolate", "box"],
   ["cherry", "lemon", "window"],
   ["cherry", "pencil", "fox"],
+  ["chicken", "bacon", "cherry"],
   ["chicken", "bird", "cheese"],
   ["chicken", "bird", "pumpkin"],
   ["chicken", "needle", "bacon"],
