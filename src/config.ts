@@ -176,10 +176,12 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["anchor", "seal", "eagle"],
   ["anchor", "soup", "piano"],
   ["apple", "anchor", "ant"],
+  ["apple", "anchor", "avocado"],
   ["apple", "clock", "ant"],
   ["apple", "juice", "ant"],
   ["apple", "juice", "backpack"],
   ["apple", "seal", "umbrella"],
+  ["avocado", "anchor", "ant"],
   ["avocado", "anchor", "apple"],
   ["avocado", "anchor", "flower"],
   ["avocado", "anchor", "kangaroo"],
@@ -190,9 +192,11 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["avocado", "milk", "potato"],
   ["avocado", "paper", "deer"],
   ["avocado", "soup", "lemon"],
+  ["bacon", "anchor", "ant"],
   ["bacon", "juice", "backpack"],
   ["bacon", "soup", "diamond"],
   ["bacon", "soup", "wheel"],
+  ["badger", "anchor", "ant"],
   ["banana", "box", "lemon"],
   ["banana", "milk", "diamond"],
   ["banana", "needle", "cake"],
@@ -394,12 +398,12 @@ const LOSING_COMBINATIONS: [Word, Word, Word?][] = [
   ["wolf", "snake", "cushion"],
 ];
 
-const OFFSET = 0;
+const OFFSET = 1;
 
 const LIMIT = 250;
 
-const TOTAL_RUNS = 250;
+const TOTAL_RUNS = 1;
 
-const USE_RANDOM_ORDER = true;
+const USE_RANDOM_ORDER = false;
 
 export { WORDS, LIMIT, OFFSET, TOTAL_RUNS, USE_RANDOM_ORDER, LOSING_COMBINATIONS };
